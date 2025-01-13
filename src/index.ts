@@ -1,5 +1,4 @@
 import './index.css';
-import g1 from './grimpan.ts';
-import g2 from './grimpan.ts';
+import Grimpan from './grimpan.ts';
 
-console.log(g1 === g2);
+console.log(Grimpan.getInstance() === Grimpan.getInstance()); // true

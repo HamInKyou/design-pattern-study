@@ -1,7 +1,7 @@
 class Grimpan {
   private static instance: Grimpan;
 
-  constructor(canvas: HTMLElement | null) {
+  private constructor(canvas: HTMLElement | null) {
     if (!canvas || !(canvas instanceof HTMLElement)) {
       throw new Error('Canvas element is required');
     }

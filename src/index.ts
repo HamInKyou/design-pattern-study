@@ -1,4 +1,18 @@
 import './index.css';
-import Grimpan from './grimpan.ts';
+import IEGrimpan from './IEGrimpan.ts';
+import ChromeGrimpan from './ChromeGrimpan.ts';
 
-console.log(Grimpan.getInstance() === Grimpan.getInstance()); // true
+function grimpanFactory(type: string) {
+  if (type === 'ie') {
+    return IEGrimpan.getInstance();
+  } else if (type === 'chrome') {
+    return ChromeGrimpan.getInstance();
+  } else {
+    throw new Error('Invalid type');
+  }
+}
+
+function main() {
+  const grimpan = grimpanFactory('chrome');
+  grimpan.initialize();
+}

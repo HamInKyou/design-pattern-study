@@ -15,10 +15,10 @@ class IEGrimpanFactory extends AbstractGrimpanFactory {
   }
 }
 
-//만약에 safari 브라우저가 추가된다면?
-//기존코드를 건드리지 않고 SafariFactory를 추가하면 된다.
-function main() {
-  const grimpan = new ChromeGrimpanFactory().createGrimpan();
+function main(factory: AbstractGrimpanFactory) {
+  const grimpan = factory.createGrimpan();
   grimpan.initialize();
   grimpan.initializeMenu();
 }
+
+main(new ChromeGrimpanFactory());

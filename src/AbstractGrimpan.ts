@@ -9,7 +9,7 @@ abstract class Grimpan {
   }
 
   abstract initialize(): void;
-  abstract initialize(): void;
+  abstract initializeMenu(): void;
 
   static getInstance() {}
 }

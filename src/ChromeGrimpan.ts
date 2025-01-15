@@ -1,20 +1,18 @@
-class ChromeGrimpan {
-  private static instance: ChromeGrimpan;
+import Grimpan from './AbstractGrimpan.ts';
 
-  private constructor(canvas: HTMLElement | null) {
-    if (!canvas || !(canvas instanceof HTMLElement)) {
-      throw new Error('Canvas element is required');
-    }
-  }
+// 구체 클래스 ( Concrete Class )
+class ChromeGrimpan extends Grimpan {
+  protected static instance: ChromeGrimpan;
 
-  static getInstance() {
+  initialize() {}
+  initializeMenu() {}
+
+  static override getInstance() {
     if (!this.instance) {
       this.instance = new ChromeGrimpan(document.querySelector('#canvas'));
     }
     return this.instance;
   }
-
-  initialize() {}
 }
 
 export default ChromeGrimpan;

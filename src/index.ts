@@ -1,18 +1,24 @@
 import './index.css';
 import IEGrimpan from './IEGrimpan.ts';
 import ChromeGrimpan from './ChromeGrimpan.ts';
+import AbstractGrimpanFactory from './AbstractGrimpanFactory.ts';
 
-function grimpanFactory(type: string) {
-  if (type === 'ie') {
-    return IEGrimpan.getInstance();
-  } else if (type === 'chrome') {
+class ChromeGrimpanFactory extends AbstractGrimpanFactory {
+  override createGrimpan() {
     return ChromeGrimpan.getInstance();
-  } else {
-    throw new Error('Invalid type');
   }
 }
 
+class IEGrimpanFactory extends AbstractGrimpanFactory {
+  override createGrimpan() {
+    return IEGrimpan.getInstance();
+  }
+}
+
+//만약에 safari 브라우저가 추가된다면?
+//기존코드를 건드리지 않고 SafariFactory를 추가하면 된다.
 function main() {
-  const grimpan = grimpanFactory('chrome');
+  const grimpan = new ChromeGrimpanFactory().createGrimpan();
   grimpan.initialize();
+  grimpan.initializeMenu();
 }

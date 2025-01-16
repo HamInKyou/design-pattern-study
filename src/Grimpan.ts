@@ -9,7 +9,6 @@ export abstract class Grimpan {
   }
 
   abstract initialize(): void;
-  abstract initializeMenu(): void;
 
   static getInstance() {}
 }
@@ -19,7 +18,6 @@ export class ChromeGrimpan extends Grimpan {
   protected static instance: ChromeGrimpan;
 
   initialize() {}
-  initializeMenu() {}
 
   static override getInstance() {
     if (!this.instance) {
@@ -34,7 +32,6 @@ export class IEGrimpan extends Grimpan {
   protected static instance: IEGrimpan;
 
   initialize() {}
-  initializeMenu() {}
 
   static override getInstance() {
     if (!this.instance) {

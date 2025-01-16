@@ -1,21 +1,7 @@
 import './index.css';
-import IEGrimpan from './IEGrimpan.ts';
-import ChromeGrimpan from './ChromeGrimpan.ts';
-import AbstractGrimpanFactory from './AbstractGrimpanFactory.ts';
+import GrimpanFactory, { ChromeGrimpanFactory } from './GrimpanFactory.ts';
 
-class ChromeGrimpanFactory extends AbstractGrimpanFactory {
-  override createGrimpan() {
-    return ChromeGrimpan.getInstance();
-  }
-}
-
-class IEGrimpanFactory extends AbstractGrimpanFactory {
-  override createGrimpan() {
-    return IEGrimpan.getInstance();
-  }
-}
-
-function main(factory: AbstractGrimpanFactory) {
+function main(factory: GrimpanFactory) {
   const grimpan = factory.createGrimpan();
   grimpan.initialize();
   grimpan.initializeMenu();

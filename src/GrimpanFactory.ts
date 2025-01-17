@@ -1,19 +1,11 @@
 import { Grimpan, ChromeGrimpan, IEGrimpan } from './Grimpan.ts';
-import {
-  ChromeGrimpanMenu,
-  GrimpanMenu,
-  IEGrimpanMenu,
-} from './GrimpanMenu.ts';
-import {
-  ChromeGrimpanHistory,
-  GrimpanHistory,
-  IEGrimpanHistory,
-} from './GrimpanHistory.ts';
+import { ChromeGrimpanMenu, GrimpanMenu, IEGrimpanMenu } from './GrimpanMenu.ts';
+import { ChromeGrimpanHistory, GrimpanHistory, IEGrimpanHistory } from './GrimpanHistory.ts';
 
 // 타입을 정의하는 추상 클래스 ( Factory Class )
 export abstract class GrimpanFactory {
   abstract createGrimpan(): Grimpan;
-  abstract createGrimpanMenu(grimpan: Grimpan): GrimpanMenu;
+  abstract createGrimpanMenu(grimpan: Grimpan, dom: HTMLElement): GrimpanMenu;
   abstract createGrimpanHistory(grimpan: Grimpan): GrimpanHistory;
 }
 
@@ -23,8 +15,8 @@ export class ChromeGrimpanFactory extends GrimpanFactory {
     return ChromeGrimpan.getInstance();
   }
 
-  override createGrimpanMenu(grimpan: ChromeGrimpan) {
-    return ChromeGrimpanMenu.getInstance(grimpan);
+  override createGrimpanMenu(grimpan: ChromeGrimpan, dom: HTMLElement) {
+    return ChromeGrimpanMenu.getInstance(grimpan, dom);
   }
 
   override createGrimpanHistory(grimpan: ChromeGrimpan) {
@@ -38,8 +30,8 @@ export class IEGrimpanFactory extends GrimpanFactory {
     return IEGrimpan.getInstance();
   }
 
-  override createGrimpanMenu(grimpan: IEGrimpan) {
-    return IEGrimpanMenu.getInstance(grimpan);
+  override createGrimpanMenu(grimpan: IEGrimpan, dom: HTMLElement) {
+    return IEGrimpanMenu.getInstance(grimpan, dom);
   }
 
   override createGrimpanHistory(grimpan: IEGrimpan) {

@@ -1,11 +1,30 @@
 import { ChromeGrimpan, Grimpan, IEGrimpan } from './Grimpan.ts';
 
+interface Cloneable {
+  clone(): Cloneable;
+}
+
+class HistoryStack extends Array implements Cloneable {
+  clone() {
+    return new HistoryStack(...this);
+  }
+}
 // 타입을 정의하는 추상 클래스 ( Product Class )
 export abstract class GrimpanHistory {
   protected grimpan: Grimpan;
+  stack: HistoryStack;
 
   protected constructor(grimpan: Grimpan) {
     this.grimpan = grimpan;
+    this.stack = new HistoryStack();
+  }
+
+  getStack() {
+    return this.stack.clone();
+  }
+
+  setStack(stack: HistoryStack) {
+    this.stack = stack.clone();
   }
 
   abstract initialize(): void;

@@ -29,6 +29,9 @@ export abstract class GrimpanHistory {
 
   abstract initialize(): void;
 
+  abstract undo(): void;
+  abstract redo(): void;
+
   static getInstance(grimpan: Grimpan) {}
 }
 
@@ -37,6 +40,9 @@ export class ChromeGrimpanHistory extends GrimpanHistory {
   protected static instance: ChromeGrimpanHistory;
 
   initialize() {}
+
+  override undo() {}
+  override redo() {}
 
   static override getInstance(grimpan: ChromeGrimpan) {
     if (!this.instance) {
@@ -49,6 +55,9 @@ export class ChromeGrimpanHistory extends GrimpanHistory {
 // 구체 클래스 ( ConcreteProduct Class )
 export class IEGrimpanHistory extends GrimpanHistory {
   protected static instance: IEGrimpanHistory;
+
+  override undo() {}
+  override redo() {}
 
   initialize() {}
 

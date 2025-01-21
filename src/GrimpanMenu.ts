@@ -1,6 +1,6 @@
 import { ChromeGrimpan, Grimpan, GrimpanMode, IEGrimpan } from './Grimpan.ts';
 import { GrimpanMenuBtn, GrimpanMenuInput } from './GrimpanMenuBtn.ts';
-import { BackCommand, Command, ForwardCommand } from './commands';
+import { BackCommand, Command, ForwardCommand, SaveCommand } from './commands';
 
 export type BtnType = 'back' | 'forward' | 'color' | 'pipette' | 'pen' | 'circle' | 'rectangle' | 'eraser' | 'save';
 
@@ -66,6 +66,10 @@ export class ChromeGrimpanMenu extends GrimpanMenu {
     this.grimpan.setMode('eraser');
   }
 
+  onClickSave() {
+    this.executeCommand(new SaveCommand(this.grimpan));
+  }
+
   drawButtonByType(type: BtnType) {
     switch (type) {
       case 'back': {
@@ -119,7 +123,7 @@ export class ChromeGrimpanMenu extends GrimpanMenu {
         return btn;
       }
       case 'save': {
-        const btn = new GrimpanMenuBtn.Builder(this, '저장', type).build();
+        const btn = new GrimpanMenuBtn.Builder(this, '저장', type).setOnClick(this.onClickSave.bind(this)).build();
         btn.draw();
         return btn;
       }

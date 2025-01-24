@@ -3,6 +3,7 @@ import { ChromeGrimpanHistory, GrimpanHistory } from './GrimpanHistory.ts';
 import GrimpanFactory, { ChromeGrimpanFactory, IEGrimpanFactory } from './GrimpanFactory.ts';
 import { BackCommand, ForwardCommand } from './commands';
 import { CircleMode, EraserMode, Mode, PenMode, PipetteMode, RectangleMode } from './modes';
+import { BlurFilter, DefaultFilter, GrayscaleFilter, InvertFilter } from './filters';
 
 export interface GrimpanOption {
   menu: BtnType[];
@@ -42,32 +43,59 @@ export abstract class Grimpan {
     switch (imageType) {
       case 'png':
         this.saveStrategy = () => {
-          const a = document.createElement('a');
-          a.download = 'canvas.png';
-          const dataURL = this.canvas.toDataURL('image/png');
-          let url = dataURL.replace(/^data:image\/png/, 'data:application/octet-stream');
-          a.href = url;
-          a.click();
+          let imageData = this.ctx.getImageData(0, 0, 300, 300);
+          const offscreenCanvas = new OffscreenCanvas(300, 300);
+          const offscreenContext = offscreenCanvas.getContext('2d')!;
+          offscreenContext.putImageData(imageData, 0, 0);
+          const df = new DefaultFilter();
+          let filter = df;
+          if (this.saveSetting.blur) {
+            const bf = new BlurFilter();
+            filter = filter.setNext(bf);
+          }
+          if (this.saveSetting.grayscale) {
+            const gf = new GrayscaleFilter();
+            filter = filter.setNext(gf);
+          }
+          if (this.saveSetting.invert) {
+            const ivf = new InvertFilter();
+            filter = filter.setNext(ivf);
+          }
+          df.handle(offscreenCanvas).then(() => {
+            const a = document.createElement('a');
+            a.download = 'canvas.png';
+            offscreenCanvas.convertToBlob().then((blob) => {
+              const reader = new FileReader();
+              reader.addEventListener('load', () => {
+                const dataURL = reader.result as string;
+                console.log('dataURL', dataURL);
+                let url = dataURL.replace(/^data:image\/png/, 'data:application/octet-stream');
+                a.href = url;
+                a.click();
+              });
+              reader.readAsDataURL(blob);
+            });
+          });
         };
         break;
       case 'jpg':
         this.saveStrategy = () => {
-          const a = document.createElement('a');
-          a.download = 'canvas.jpg';
-          const dataURL = this.canvas.toDataURL('image/jpeg');
-          let url = dataURL.replace(/^data:image\/jpeg/, 'data:application/octet-stream');
-          a.href = url;
-          a.click();
+          if (this.saveSetting.blur) {
+          }
+          if (this.saveSetting.grayscale) {
+          }
+          if (this.saveSetting.invert) {
+          }
         };
         break;
       case 'webp':
         this.saveStrategy = () => {
-          const a = document.createElement('a');
-          a.download = 'canvas.webp';
-          const dataURL = this.canvas.toDataURL('image/webp');
-          let url = dataURL.replace(/^data:image\/webp/, 'data:application/octet-stream');
-          a.href = url;
-          a.click();
+          if (this.saveSetting.blur) {
+          }
+          if (this.saveSetting.grayscale) {
+          }
+          if (this.saveSetting.invert) {
+          }
         };
         break;
     }

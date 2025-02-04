@@ -1,6 +1,6 @@
 import { ChromeGrimpan, Grimpan, GrimpanMode, IEGrimpan } from './Grimpan.ts';
 import { GrimpanMenuBtn, GrimpanMenuInput, GrimpanMenuSaveBtn } from './GrimpanMenuBtn.ts';
-import { BackCommand, Command, ForwardCommand, SaveCommand } from './commands';
+import { BackCommand, Command, ForwardCommand, SaveCommand, SaveHistoryCommand } from './commands';
 import { SubscriptionManager } from './Observer.ts';
 
 export type BtnType = 'back' | 'forward' | 'color' | 'pipette' | 'pen' | 'circle' | 'rectangle' | 'eraser' | 'save';
@@ -49,6 +49,7 @@ export class ChromeGrimpanMenu extends GrimpanMenu {
   override initialize(types: BtnType[]) {
     types.forEach(this.drawButtonByType.bind(this));
     this.grimpan.setMode('pen');
+    this.executeCommand(new SaveHistoryCommand(this.grimpan));
   }
 
   onClickBack() {

@@ -1,7 +1,7 @@
 import { BtnType, ChromeGrimpanMenu, GrimpanMenu } from './GrimpanMenu.ts';
 import { ChromeGrimpanHistory, GrimpanHistory } from './GrimpanHistory.ts';
 import GrimpanFactory, { ChromeGrimpanFactory, IEGrimpanFactory } from './GrimpanFactory.ts';
-import { BackCommand, ForwardCommand } from './commands';
+import { BackCommand, Command, ForwardCommand } from './commands';
 import { CircleMode, EraserMode, Mode, PenMode, PipetteMode, RectangleMode } from './modes';
 import { BlurFilter, DefaultFilter, GrayscaleFilter, InvertFilter } from './filters';
 import { SaveCompleteObserver, SubscriptionManager } from './Observer.ts';
@@ -28,6 +28,15 @@ export abstract class Grimpan {
     grayscale: false,
     invert: false,
   };
+
+  makeSnapshot() {
+    const snapshot = {
+      color: this.color,
+      mode: this.mode,
+      data: this.canvas.toDataURL('image/png'),
+    };
+    return Object.freeze(snapshot);
+  }
 
   protected constructor(canvas: HTMLElement | null, factory: GrimpanFactory) {
     if (!canvas || !(canvas instanceof HTMLCanvasElement)) {
@@ -133,6 +142,25 @@ export abstract class Grimpan {
     if (this.menu.colorBtn) {
       this.menu.colorBtn.value = color;
     }
+  }
+
+  invoke(command: Command) {
+    command.execute();
+  }
+
+  resetState() {
+    this.color = '#fff';
+    this.mode = new PenMode(this);
+    this.ctx.clearRect(0, 0, 300, 300);
+  }
+
+  restore(history: { mode: Mode; color: string; data: string }) {
+    const img = new Image();
+    img.addEventListener('load', () => {
+      this.ctx.clearRect(0, 0, 300, 300);
+      this.ctx.drawImage(img, 0, 0, 300, 300);
+    });
+    img.src = history.data;
   }
 
   abstract initialize(option: GrimpanOption): void;

@@ -1,6 +1,21 @@
 import { ChromeGrimpan, Grimpan, IEGrimpan } from './Grimpan.ts';
 import { SubscriptionManager } from './Observer.ts';
 
+class StackIterator {
+  private index = 0;
+  constructor(private readonly stack: HistoryStack) {}
+  next() {
+    if (!this.done) {
+      return this.stack[this.index++];
+    }
+    // 없는 순간
+  }
+  get done() {
+    return this.stack.length === this.index;
+    // [0, 1, 2]
+  }
+}
+
 interface Cloneable {
   clone(): Cloneable;
 }
